@@ -1,0 +1,72 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block content %}
+<h1>YD Bloom Admin Dashboard</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+  <div style="flex: 1; min-width: 250px;">
+    <h2>Total Revenue</h2>
+    <p style="font-size: 2em; font-weight: bold;">${{ total_revenue|floatformat:2 }}</p>
+  </div>
+  <div style="flex: 2; min-width: 350px;">
+    <h2>Recent Orders</h2>
+    <table class="admin-table">
+      <tr><th>ID</th><th>User</th><th>Status</th><th>Total</th><th>Date</th></tr>
+      {% for order in recent_orders %}
+      <tr>
+        <td><a href="{% url 'admin:orders_order_change' order.id %}">{{ order.id }}</a></td>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.status|title }}</td>
+        <td>${{ order.total|floatformat:2 }}</td>
+        <td>{{ order.created_at|date:'Y-m-d H:i' }}</td>
+      </tr>
+      {% empty %}<tr><td colspan="5">No recent orders.</td></tr>{% endfor %}
+    </table>
+  </div>
+  <div style="flex: 2; min-width: 350px;">
+    <h2>Best Sellers</h2>
+    <table class="admin-table">
+      <tr><th>Product</th><th>Sold</th></tr>
+      {% for product in best_sellers %}
+      <tr>
+        <td><a href="{% url 'admin:store_product_change' product.id %}">{{ product.name }}</a></td>
+        <td>{{ product.sold|default:0 }}</td>
+      </tr>
+      {% empty %}<tr><td colspan="2">No sales yet.</td></tr>{% endfor %}
+    </table>
+  </div>
+  <div style="flex: 1; min-width: 250px;">
+    <h2>Low Stock</h2>
+    <ul>
+      {% for product in low_stock %}
+      <li><a href="{% url 'admin:store_product_change' product.id %}">{{ product.name }}</a> (<span style="color:red;">{{ product.stock }}</span>)</li>
+      {% empty %}<li>No low stock products.</li>{% endfor %}
+    </ul>
+  </div>
+</div>
+<!-- Recent Admin Actions Widget -->
+<div style="margin-top:2rem;">
+  <h2>Recent Admin Actions</h2>
+  <table class="admin-table">
+    <tr><th>Time</th><th>User</th><th>Action</th><th>Model</th><th>Object</th></tr>
+    {% for log in recent_admin_actions %}
+    <tr>
+      <td>{{ log.timestamp|date:'Y-m-d H:i' }}</td>
+      <td>{{ log.user.username if log.user else 'System' }}</td>
+      <td>{{ log.action|title }}</td>
+      <td>{{ log.model }}</td>
+      <td>{{ log.object_repr|truncatechars:30 }}</td>
+    </tr>
+    {% empty %}<tr><td colspan="5">No recent admin actions.</td></tr>{% endfor %}
+  </table>
+</div>
+<div style="margin-top:2rem;">
+  <h2>Order Status Distribution</h2>
+  <table class="admin-table">
+    <tr><th>Status</th><th>Count</th></tr>
+    {% for s in order_statuses %}
+    <tr><td>{{ s.status|title }}</td><td>{{ s.count }}</td></tr>
+    {% empty %}<tr><td colspan="2">No orders.</td></tr>{% endfor %}
+  </table>
+</div>
+{% endblock %} 

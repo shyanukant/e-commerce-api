@@ -1,0 +1,70 @@
+{% load pdf_filters %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Order Receipt - {{ order.id }}</title>
+</head>
+<body>
+    <div class="header">
+        <div class="company-name">{{ company_name }}</div>
+        <div class="company-details">
+            {{ company_address }}<br>
+            Phone: {{ company_phone }} | Email: {{ company_email }}
+        </div>
+    </div>
+
+    <div class="receipt-info">
+        <div class="order-details">
+            <div class="section-title">Order Information</div>
+            <p><strong>Order ID:</strong> #{{ order.id }}</p>
+            <p><strong>Order Date:</strong> {{ order.created_at|date:"F d, Y" }}</p>
+            <p><strong>Status:</strong> 
+                <span class="status-badge status-{{ order.status }}">{{ order.status|title }}</span>
+            </p>
+        </div>
+        <div class="customer-details">
+            <div class="section-title">Customer Information</div>
+            <p><strong>Name:</strong> {{ order.user.get_full_name|default:order.user.username }}</p>
+            <p><strong>Email:</strong> {{ order.user.email }}</p>
+            <p><strong>Username:</strong> {{ order.user.username }}</p>
+        </div>
+    </div>
+
+    <div class="section-title">Order Items</div>
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.size.name|default:"N/A" }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price }}</td>
+                <td>${{ item.price|multiply:item.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="total-section">
+        <div class="total-amount">
+            Total Amount: ${{ order.total }}
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for your purchase from {{ company_name }}!</p>
+        <p>This receipt was generated on {{ generated_at }}</p>
+        <p>For questions or support, please contact us at {{ company_email }}</p>
+    </div>
+</body>
+</html> 

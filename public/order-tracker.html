@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Tracker</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; color: #333; }
+    .container { max-width: 500px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 32px; }
+    h1 { color: #4c51bf; }
+    #status { font-size: 1.2em; margin-top: 20px; }
+    #log { margin-top: 20px; font-size: 0.95em; color: #555; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Order Tracker</h1>
+    <label for="orderId">Order ID:</label>
+    <input type="text" id="orderId" placeholder="Enter your order ID">
+    <button onclick="subscribeOrder()">Track Order</button>
+    <div id="status"></div>
+    <div id="log"></div>
+  </div>
+  <script>
+    let socket;
+    let orderId = null;
+    function subscribeOrder() {
+      orderId = document.getElementById('orderId').value;
+      if (!orderId) {
+        alert('Please enter an order ID.');
+        return;
+      }
+      document.getElementById('status').innerText = 'Connecting...';
+      socket = new WebSocket('ws://' + window.location.hostname + ':8000/ws/orders/');
+      socket.onopen = function() {
+        document.getElementById('status').innerText = 'Connected. Waiting for updates...';
+        socket.send(JSON.stringify({type: 'subscribe_order', order_id: orderId}));
+      };
+      socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        if (data.type === 'order_status_update') {
+          document.getElementById('status').innerText = 'Order #' + data.order_id + ' status: ' + data.status;
+          document.getElementById('log').innerText += '\n' + (data.message || '');
+        } else if (data.type === 'subscription_confirmed') {
+          document.getElementById('status').innerText = 'Subscribed to order #' + data.order_id + '. Waiting for updates...';
+        }
+      };
+      socket.onclose = function() {
+        document.getElementById('status').innerText = 'Connection closed.';
+      };
+      socket.onerror = function() {
+        document.getElementById('status').innerText = 'WebSocket error.';
+      };
+    }
+  </script>
+</body>
+</html> 

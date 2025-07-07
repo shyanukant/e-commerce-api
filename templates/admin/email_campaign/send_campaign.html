@@ -1,0 +1,20 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Send Email Campaign</h1>
+    <form method="post" enctype="multipart/form-data" style="max-width: 700px; margin: 0 auto;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Send Campaign</button>
+        <a href="{% url 'ydbloom_admin:campaigns_emailcampaign_changelist' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+    {% if original %}
+    <div class="mt-4">
+        <h3>Preview</h3>
+        <iframe srcdoc="{{ original.template.content|safe }}" style="width:100%; min-height:300px; border:1px solid #ddd;"></iframe>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

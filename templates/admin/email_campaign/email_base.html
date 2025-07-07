@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ subject|default:app_name|default:'Your App' }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8f9fa; color: #333; margin: 0; padding: 0; }
+        .email-container { background: white; max-width: 600px; margin: 30px auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 32px; }
+        .header { border-bottom: 2px solid #4c51bf; padding-bottom: 16px; margin-bottom: 24px; }
+        .brand { font-size: 28px; font-weight: bold; color: #4c51bf; }
+        .content { font-size: 16px; line-height: 1.6; }
+        .footer { margin-top: 32px; font-size: 12px; color: #888; border-top: 1px solid #eee; padding-top: 16px; }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <span class="brand">{{ app_name|default:'Your App' }}</span>
+        </div>
+        <div class="content">
+            {{ content|safe }}
+        </div>
+        <div class="footer">
+            &copy; {{ now|date:"Y" }} {{ app_name|default:'Your App' }}. All rights reserved.<br>
+            This email was sent to you as a registered user of {{ app_name|default:'Your App' }}.
+        </div>
+    </div>
+</body>
+</html> 

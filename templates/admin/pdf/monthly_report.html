@@ -1,0 +1,75 @@
+{% load pdf_filters %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Monthly Revenue Report - {{ month }}</title>
+</head>
+<body>
+    <div class="header">
+        <div class="company-name">{{ company_name }}</div>
+        <div class="report-title">Monthly Revenue Report</div>
+        <div class="company-details">{{ month }}</div>
+    </div>
+
+    <div class="summary-section">
+        <div class="summary-item">
+            <div class="summary-label">Total Revenue</div>
+            <div class="summary-value">${{ total_revenue }}</div>
+        </div>
+        <div class="summary-item">
+            <div class="summary-label">Total Orders</div>
+            <div class="summary-value">{{ total_orders }}</div>
+        </div>
+        <div class="summary-item">
+            <div class="summary-label">Average Order Value</div>
+            <div class="summary-value">
+                {% if total_orders > 0 %}
+                    ${{ total_revenue|divide:total_orders|floatformat:2 }}
+                {% else %}
+                    $0.00
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">Order Details</div>
+    <table class="orders-table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Items</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.user.get_full_name|default:order.user.username }}</td>
+                <td>{{ order.created_at|date:"M d, Y" }}</td>
+                <td>
+                    <span class="status-badge status-{{ order.status }}">{{ order.status|title }}</span>
+                </td>
+                <td>{{ order.items.count }} items</td>
+                <td>${{ order.total }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; padding: 20px; color: #666;">
+                    No orders found for this month.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Report generated on {{ generated_at }}</p>
+        <p>{{ company_name }} - Monthly Revenue Report</p>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,10 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ title }}</h1>
+    <div style="border:1px solid #ddd; border-radius:8px; overflow:hidden; margin-top:1rem;">
+        <iframe srcdoc="{{ html_content|safe }}" style="width:100%; min-height:500px; border:none;"></iframe>
+    </div>
+    <a href="#" onclick="window.close(); return false;" class="btn btn-secondary mt-3">Close Preview</a>
+</div>
+{% endblock %} 
