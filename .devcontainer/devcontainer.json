@@ -1,15 +1,25 @@
 {
   "name": "DevContainer",
   "dockerComposeFile": [
-    "docker-compose.yml"
+    "docker-compose.override.yml"
   ],
   "service": "e-commerce-api",
-  "workspaceFolder": "/e-commerce-api",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}", // Sets the default path VS Code opens
+
+	"customizations": {
+		"vscode": {
+			// Add VS Code extensions you want installed in the container
+			"extensions": [
+				"ms-python.python", // Python extension
+				"ms-python.vscode-pylance", // Pylance for better Python intellisense
+				"ms-azuretools.vscode-docker", // Docker extension
+				"mtxr.sqltools", // SQLTools for database interaction
+				"mtxr.sqltools-driver-pg" // PostgreSQL driver for SQLTools
+			]
+		}
+	},
   "forwardPorts": [8000, 5432, 6379],
   "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt && python manage.py migrate",
  
-  "extensions": [
-    "ms-python.python",
-    "ms-azuretools.vscode-docker"
-  ]
+  
 } 
