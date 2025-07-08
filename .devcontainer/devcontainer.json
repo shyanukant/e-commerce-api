@@ -1,10 +1,10 @@
 {
-  "name": "YD Bloom DevContainer",
+  "name": "DevContainer",
   "dockerComposeFile": [
     "../docker-compose.yml"
   ],
-  "service": "app",
-  "workspaceFolder": "/app",
+  "service": "backend",
+  "workspaceFolder": "/e-commerce-api",
   "forwardPorts": [8000, 5432, 6379],
   "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt && python manage.py migrate",
   "settings": {
