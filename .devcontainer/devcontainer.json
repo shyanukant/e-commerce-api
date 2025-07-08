@@ -1,7 +1,7 @@
 {
   "name": "DevContainer",
   "dockerComposeFile": [
-    "docker-compose.override.yml"
+    "docker-compose.yml"
   ],
   "service": "e-commerce-api",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}", // Sets the default path VS Code opens
