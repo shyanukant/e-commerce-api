@@ -21,10 +21,10 @@ services:
 
   app:
     build: .
-    command: daphne -b 0.0.0.0 -p 8000 yd_bloom_backend.asgi:application
+    command: daphne -b 0.0.0.0 -p 8000 backend.asgi:application
     volumes:
-      - .:/app
-      - staticfiles:/app/staticfiles
+      - .:/e-commerce-api
+      - staticfiles:/e-commerce-api/staticfiles
     ports:
       - "8000:8000"
     env_file:
