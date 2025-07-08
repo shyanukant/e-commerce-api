@@ -1,15 +1,13 @@
 {
-  "name": "YD Bloom DevContainer",
+  "name": "DevContainer",
   "dockerComposeFile": [
-    "../docker-compose.yml"
+    "docker-compose.yml"
   ],
-  "service": "app",
-  "workspaceFolder": "/app",
+  "service": "e-commerce-api",
+  "workspaceFolder": "/e-commerce-api",
   "forwardPorts": [8000, 5432, 6379],
   "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt && python manage.py migrate",
-  "settings": {
-    "python.pythonPath": "/usr/local/bin/python"
-  },
+ 
   "extensions": [
     "ms-python.python",
     "ms-azuretools.vscode-docker"
