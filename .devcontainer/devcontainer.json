@@ -19,7 +19,7 @@
 		}
 	},
   "forwardPorts": [8000, 5432, 6379],
-  "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt && python manage.py migrate",
+  "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt && python manage.py migrate"
  
   
 } 
