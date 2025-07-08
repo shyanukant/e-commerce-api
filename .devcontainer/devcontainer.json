@@ -1,26 +1,26 @@
 {
-  "name": "DevContainer",
+  "name": "DevContainer with PostgreSQL, Redis, and WeasyPrint",
   "dockerComposeFile": [
     "docker-compose.yml"
   ],
   "service": "e-commerce-api",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}", // Sets the default path VS Code opens
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 
 	"customizations": {
 		"vscode": {
-			// Add VS Code extensions you want installed in the container
 			"extensions": [
-				"ms-python.python", // Python extension
-				"ms-python.vscode-pylance", // Pylance for better Python intellisense
-				"ms-azuretools.vscode-docker", // Docker extension
-				"mtxr.sqltools", // SQLTools for database interaction
-				"mtxr.sqltools-driver-pg" // PostgreSQL driver for SQLTools
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-azuretools.vscode-docker",
+				"mtxr.sqltools",
+				"mtxr.sqltools-driver-pg"
 			]
 		}
 	},
   "forwardPorts": [8000, 5432, 6379],
 
-  "postCreateCommand": "apt-get update && apt-get install -y postgresql-client && cd /e-commerce-api && pip install --upgrade pip && pip install psycopg2-binary && pip install -r requirements.txt && python -c 'import time; import socket; s = socket.socket(); time.sleep(5); s.connect((\"db\", 5432))' && python manage.py migrate || exit 1",
- 
-  "initializeCommand": "cd ${localWorkspaceFolder} && docker-compose up -d db redis"  
+ "postCreateCommand": "sudo apt-get update && sudo apt-get install -y postgresql-client build-essential python3-dev python3-pip python3-setuptools python3-wheel python3-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info && cd /e-commerce-api && pip install --upgrade pip && pip install psycopg2-binary && pip install -r requirements.txt && python -c 'import time; import socket; s = socket.socket(); time.sleep(5); s.connect((\"db\", 5432))' && python manage.py migrate || exit 1",
+
+
+  "initializeCommand": "cd ${localWorkspaceFolder} && docker-compose up -d db redis"
 }
