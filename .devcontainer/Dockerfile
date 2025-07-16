@@ -1,6 +1,15 @@
 # syntax=docker/dockerfile:1
 FROM python:3.11-slim
 
+# Install WeasyPrint dependencies
+RUN apt-get update && \
+    apt-get install -y gcc libpq-dev \
+    libcairo2 libcairo2-dev libpangocairo-1.0-0 \
+    weasyprint && \
+    apt clean && \
+    rm -rf /var/cache/apt/*
+
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
