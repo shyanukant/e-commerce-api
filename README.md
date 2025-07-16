@@ -76,7 +76,12 @@ A modern, production-ready Django REST API backend for the {{ app_name|default:'
 
 7. **Run the server**
    ```bash
-   python manage.py runserver
+   python manage.py runserver 
+   ```
+
+   - **Run server in .devcontainer**
+   ```bash
+   python manage.py runserver 0.0.0.0:8000
    ```
 
 ---
