@@ -19,8 +19,7 @@
 	},
   "forwardPorts": [8000, 5432, 6379],
 
-  "postCreateCommand": "cd /e-commerce-api && pip install --upgrade pip && pip install psycopg2-binary && pip install -r requirements.txt && python -c 'import time; import socket; s = socket.socket(); time.sleep(5); s.connect((\"db\", 5432))' && python manage.py migrate || exit 1",
-
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0 libcairo2 libgdk-pixbuf2.0-0 && cd /e-commerce-api && pip install --upgrade pip && pip install psycopg2-binary && pip install -r requirements.txt && python -c 'import time; import socket; s = socket.socket(); time.sleep(5); s.connect((\"db\", 5432))' && python manage.py migrate || exit 1",
 
   "initializeCommand": "cd ${localWorkspaceFolder} && docker-compose up -d db redis"
 }
